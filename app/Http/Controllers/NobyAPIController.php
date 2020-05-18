@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use GuzzleHttp\Client;
 
 class NobyAPIController extends Controller
 {
@@ -13,7 +14,24 @@ class NobyAPIController extends Controller
      */
     public function index()
     {
-        //
+        //URL
+        $nobyApiUrl = 'https://app.cotogoto.ai';
+
+        //Clientインスタンス化
+        $client = new Client([
+            'base_uri' => $nobyApiUrl,
+        ]);
+
+        $path = '/webapi/noby.json?appkey=ca6bb3e3a9a11cf0ba890cd350054eb8&mail=wada121400@gmail.com&pass=Tabunnsoreha07-&text=今日も1日頑張りましょう。&lat=&lng=&study=&persona=&ending=';
+        $res = $client->request(
+            'GET',
+            $path,
+            [
+                'allow_redirects' => true,
+            ]
+        );
+
+        return response(json_decode($res->getBody()->getContents(), true));
     }
 
     /**
