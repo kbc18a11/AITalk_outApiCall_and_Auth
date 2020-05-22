@@ -138,7 +138,7 @@ return [
     'nody_api_mail' => env('NODY_API_MAIL'),
 
     #パスワード
-    'nody_api_pass' => env('NODY_API_pass'),
+    'nody_api_pass' => env('NODY_API_PASS'),
 
 
     /*
