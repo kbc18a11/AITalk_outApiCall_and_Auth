@@ -4,11 +4,29 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use GuzzleHttp\Client;
+use phpDocumentor\Reflection\Types\This;
+use Illuminate\Support\Facades\Validator;
 
 class NobyAPI extends Model
 {
     //APIのURL
     private static $nobyApiUrl = 'https://app.cotogoto.ai';
+
+    public static $apiReqestRules = [
+        'text' => ['required']
+    ];
+
+    /**
+     * APIリクエストのパラメータのバリデーションの検証
+     * @param array
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    public static function createvalidator(array $array)
+    {
+        # code...
+        return Validator::make($array, NobyAPI::$apiReqestRules);
+    }
+
 
     /**
      * APIにリクエストして、結果を返す
