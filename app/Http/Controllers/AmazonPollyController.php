@@ -3,23 +3,34 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\AmazonPolly;
 
 class AmazonPollyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+    /***
+     * AmazonPollyのAPIにリクエストし、音声をS3に保存して、保存先のファイル名を含むパスを返す
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $amazonPolly = new AmazonPolly();
+
+        //バリデーションの検証がだめだったか？
+        if(!$amazonPolly->validation($request->all())){
+            return response()->json($amazonPolly->errorMessage);
+        }
+
+
+
+
+        return response()->json(['voiceURL' => $amazonPolly->apiRequest($request->text)]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -30,7 +41,7 @@ class AmazonPollyController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -41,8 +52,8 @@ class AmazonPollyController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -53,7 +64,7 @@ class AmazonPollyController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
