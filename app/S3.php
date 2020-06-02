@@ -13,7 +13,7 @@ class S3
 
     /***
      * S3Manager constructor.
-     * @param string $folderpath
+     * @param string $filepath
      */
     public function __construct(string $folderpath)
     {
@@ -30,8 +30,22 @@ class S3
     public function isFile(string $path): bool
     {
         //ファイルは存在するか？
-        if ($this->s3Disk->exists($path)) return true;
+        if ($this->s3Disk->exists($this->folderpath.'/'.$path)) return true;
 
         return false;
+    }
+
+
+    /**
+     * S3にファイル保存し、保存したファイルのパスを返す
+     * @param $file
+     * @return string
+     */
+    public function filUpload($file): string
+    {
+        //S3にファイルを保存
+        $path = $this->s3Disk->putFile($this->folderpath, $file, 'public');
+
+        return $path;
     }
 }
