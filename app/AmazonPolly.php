@@ -23,7 +23,7 @@ class AmazonPolly extends Model
      * バリデーションの検証
      * @param array
      */
-    public  function validation(array $data)
+    public  function getValidation(array $data)
     {
         //バリデーションの検証
         $validationResult = Validator::make($data, $this->rules);

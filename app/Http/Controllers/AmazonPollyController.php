@@ -17,8 +17,8 @@ class AmazonPollyController extends Controller
         $amazonPolly = new AmazonPolly();
 
         //バリデーションの検証がだめだったか？
-        if(!$amazonPolly->validation($request->all())){
-            return response()->json($amazonPolly->errorMessage);
+        if(!$amazonPolly->getValidation($request->all())){
+            return response()->json($amazonPolly->errorMessage,400);
         }
 
 

@@ -14,13 +14,13 @@ class NobyAPIController extends Controller
     public function index(Request $request)
     {
         //バリデーションの検証
-        $validationResult = NobyAPI::createvalidator($request->all());
+        $validationResult = NobyAPI::getValidator($request->all());
 
         //バリデーションの結果が駄目か？
         if ($validationResult->fails()) {
             # code...
             $param['error'] = $validationResult->messages();
-            return response()->json($param);
+            return response()->json($param,);
         }
 
         $nobyApi = new NobyAPI();

@@ -21,7 +21,7 @@ class NobyAPI extends Model
      * @param array
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    public static function createvalidator(array $array)
+    public static function getValidator(array $array)
     {
         # code...
         return Validator::make($array, NobyAPI::$apiReqestRules);
