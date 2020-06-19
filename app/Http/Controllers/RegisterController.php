@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
@@ -21,10 +22,25 @@ class RegisterController extends Controller
         //バリデーションの結果が駄目か？
         if ($validationResult->fails()) {
             # code...
-            $param['error'] = $validationResult->messages();
-            return response()->json($param);
+            return response()->json([
+                'createResult' => false,
+                'error' => $validationResult->messages()
+            ]);
         }
 
-        return response()->json(['a']);
+        //ユーザー登録
+        $createparam = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'icon' => 'https://aitoke.s3-ap-northeast-1.amazonaws.comicon/default/default_icon.png',
+        ];
+
+        //INSERT文実行
+        User::create($createparam);
+
+        return response()->json([
+            'createResult' => true,
+        ]);
     }
 }
