@@ -27,5 +27,6 @@ Route::group(['middleware' => ['api']], function (){
     //ユーザー登録
     Route::post('/register', 'RegisterController@create');
 
-
+    //ログイン
+    Route::post('login', 'AuthController@login');
 });
