@@ -22,4 +22,6 @@ Route::group(['middleware' => ['api']], function (){
     Route::resource('talkText', 'NobyAPIController');
 
     Route::resource('talkVoice', 'AmazonPollyController');
+
+    Route::post('/register', 'RegisterController@create');
 });
