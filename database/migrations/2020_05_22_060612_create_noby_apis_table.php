@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateNobyAPISTable extends Migration
+class CreateNobyApiSTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateNobyAPISTable extends Migration
      */
     public function up()
     {
-        Schema::create('noby_a_p_i_s', function (Blueprint $table) {
+        Schema::create('noby_apis', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateNobyAPISTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('noby_a_p_i_s');
+        Schema::dropIfExists('noby_apis');
     }
 }
