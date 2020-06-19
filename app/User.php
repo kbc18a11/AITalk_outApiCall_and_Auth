@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 
@@ -38,6 +39,40 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * 登録のバリデーションの条件
+     * @var array
+     */
+    private static $createRules = [
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+    ];
+
+    /**
+     * 登録のバリエーションのエラーメッセージ
+     * @var array
+     */
+    private static  $createErrorMessages = [
+        'required' => '必須項目です。',
+        'max' => '255文字以下入力してください',
+        'min' => '8文字以上入力してください',
+        'unique' => '既にほかのユーザーが利用しています',
+        'email' => 'メールアドレスを入力してください',
+        'confirmed' => 'パスワードの確認入力が一致しません'
+    ];
+
+    /**
+     * APIリクエストのパラメータのバリデーションの検証
+     * @param array
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    public static function createValidator(array $array)
+    {
+        # code...
+        return Validator::make($array, User::$createRules,User::$createErrorMessages);
+    }
 
     /**
      * JWT トークンに保存する ID を返す
