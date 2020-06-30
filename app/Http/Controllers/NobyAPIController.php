@@ -20,7 +20,7 @@ class NobyAPIController extends Controller
         if ($validationResult->fails()) {
             # code...
             $param['error'] = $validationResult->messages();
-            return response()->json($param,);
+            return response()->json($param);
         }
 
         $nobyApi = new NobyAPI();
