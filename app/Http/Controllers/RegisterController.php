@@ -25,7 +25,7 @@ class RegisterController extends Controller
             return response()->json([
                 'createResult' => false,
                 'error' => $validationResult->messages()
-            ]);
+            ],422);
         }
 
         //ユーザー登録
