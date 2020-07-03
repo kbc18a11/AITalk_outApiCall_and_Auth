@@ -29,4 +29,9 @@ Route::group(['middleware' => ['api']], function (){
 
     //ログイン
     Route::post('login', 'AuthController@login');
+
+    //認証必須
+    Route::group(['middleware' => ['jwt.auth']], function () {
+
+    });
 });
