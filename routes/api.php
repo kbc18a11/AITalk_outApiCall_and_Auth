@@ -18,7 +18,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware' => ['api']], function (){
+Route::group(['middleware' => ['api']], function () {
+    //未認証ユーザーの飛ばす先
+    Route::get('/', function () {
+        return response()->json(['error' => 'unauthorized'],401);
+    })->name('login');
+
     //AIBOTAPIサービス関係
     Route::resource('talkText', 'NobyAPIController');
 
@@ -32,6 +37,7 @@ Route::group(['middleware' => ['api']], function (){
 
     //認証必須
     Route::group(['middleware' => ['jwt.auth']], function () {
-
+        //自ユーザー情報取得
+        Route::get('me', 'AuthController@me');
     });
 });
