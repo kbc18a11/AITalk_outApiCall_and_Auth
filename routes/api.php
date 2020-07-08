@@ -39,5 +39,6 @@ Route::group(['middleware' => ['api']], function () {
     Route::group(['middleware' => ['jwt.auth']], function () {
         //自ユーザー情報取得
         Route::get('me', 'AuthController@me');
+        Route::post('logout', 'AuthController@logout');
     });
 });
