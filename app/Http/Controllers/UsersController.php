@@ -32,7 +32,7 @@ class UsersController extends Controller
             'error' => ['id' => '存在しないユーザーidです']
         ], 422);
 
-        return  response()->json($user);
+        return response()->json($user);
     }
 
     /**
@@ -44,6 +44,13 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //idのユーザーをインスタンス化
+        $user = User::find($id);
+        if (!$user) return response()->json([
+            'createResult' => false,
+            'error' => ['id' => '存在しないユーザーidです']
+        ], 422);
+
         //バリデーションの検証
         $validationResult = User::updateValidator($request->all());
         //エラーは存在するか？
