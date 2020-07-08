@@ -19,7 +19,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','icon'
+        'name', 'email', 'password', 'icon'
     ];
 
     /**
@@ -46,32 +46,54 @@ class User extends Authenticatable implements JWTSubject
      */
     private static $createRules = [
         'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'email' => ['required', 'string', 'email', 'max:255'],
         'password' => ['required', 'string', 'min:8', 'confirmed'],
     ];
 
     /**
-     * 登録のバリエーションのエラーメッセージ
+     * ユーザ情報の更新用
      * @var array
      */
-    private static  $createErrorMessages = [
+    private static $updateRules = [
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'icon' => ['required', 'image']
+    ];
+
+    /**
+     * バリデーションルールごとののエラーメッセージ
+     * @var array
+     */
+    private static $ErrorMessages = [
         'required' => '必須項目です。',
         'max' => '255文字以下入力してください',
         'min' => '8文字以上入力してください',
         'unique' => '既にほかのユーザーが利用しています',
         'email' => 'メールアドレスを入力してください',
-        'confirmed' => 'パスワードの確認入力が一致しません'
+        'confirmed' => 'パスワードの確認入力が一致しません',
+        'image' => '画像を指定してください'
     ];
 
     /**
-     * APIリクエストのパラメータのバリデーションの検証
+     * ユーザー登録のパラメータのバリデーションの検証
      * @param array
      * @return \Illuminate\Contracts\Validation\Validator
      */
     public static function createValidator(array $array)
     {
         # code...
-        return Validator::make($array, User::$createRules,User::$createErrorMessages);
+        return Validator::make($array, User::$createRules, User::$ErrorMessages);
+    }
+
+    /**
+     * ユーザー情報更新のパラメータのバリデーションの検証
+     * @param array $array
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    public static function updateValidator(array $array)
+    {
+        # code...
+        return Validator::make($array, User::$updateRules, User::$ErrorMessages);
     }
 
     /**

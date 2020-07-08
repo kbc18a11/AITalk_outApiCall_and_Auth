@@ -33,11 +33,22 @@ class UsersController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        //バリデーションの検証
+        $validationResult = User::updateValidator($request->all());
+        //エラーは存在するか？
+        if ($validationResult->fails()) {
+            //エラーメッセージを返す
+            return response()->json([
+                'createResult' => false,
+                'error' => $validationResult->messages()
+            ], 422);
+        }
+
+        return response()->json(['aa']);
     }
 
     /**
