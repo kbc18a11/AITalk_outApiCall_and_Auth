@@ -35,12 +35,15 @@ Route::group(['middleware' => ['api']], function () {
     //ログイン
     Route::post('login', 'AuthController@login');
 
+    //
+    Route::resource('user', 'UsersController', ['only' => ['index', 'show']]);
+
     //認証必須
     Route::group(['middleware' => ['jwt.auth']], function () {
         //自ユーザー情報取得
         Route::get('me', 'AuthController@me');
         Route::post('logout', 'AuthController@logout');
 
-        Route::resource('user','UsersController');
+        Route::resource('user', 'UsersController', ['only' => ['update']]);
     });
 });

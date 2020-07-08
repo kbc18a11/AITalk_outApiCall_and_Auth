@@ -21,11 +21,18 @@ class UsersController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        //
+        //idのユーザーをインスタンス化
+        $user = User::find($id);
+        if (!$user) return response()->json([
+            'createResult' => false,
+            'error' => ['id' => '存在しないユーザーidです']
+        ], 422);
+
+        return  response()->json($user);
     }
 
     /**
