@@ -48,11 +48,10 @@ class UsersController extends Controller
         //更新対象のユーザーとリクエストしたユーザーとのidは違うか？
         if (intval($id) !== Auth::id()) {
             return response()->json([
-                'createResult' => false,
+                'updateResult' => false,
                 'error' => ['id' => '更新できないユーザーです']
             ], 422);
         }
-
 
         //バリデーションの検証
         $validationResult = User::updateValidator($request->all());
@@ -60,12 +59,23 @@ class UsersController extends Controller
         if ($validationResult->fails()) {
             //エラーメッセージを返す
             return response()->json([
-                'createResult' => false,
+                'updateResult' => false,
                 'error' => $validationResult->messages()
             ], 422);
         }
 
-        return response()->json(['aa']);
+        //userをインスタンス化
+        $user = User::find($id);
+        //メールアドレスの検証
+        if ($user->otherPeopleUseEmail($request->email)) {
+            //エラーメッセージを返す
+            return response()->json([
+                'updateResult' => false,
+                'error' => ['email' => '既にほかのユーザーが利用しているメールアドレスです']
+            ], 422);
+        }
+
+        return response()->json($user->otherPeopleUseEmail($request->email));
     }
 
     /**
