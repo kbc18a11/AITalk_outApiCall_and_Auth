@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
@@ -44,12 +45,14 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //idのユーザーをインスタンス化
-        $user = User::find($id);
-        if (!$user) return response()->json([
-            'createResult' => false,
-            'error' => ['id' => '存在しないユーザーidです']
-        ], 422);
+        //更新対象のユーザーとリクエストしたユーザーとのidは違うか？
+        if (intval($id) !== Auth::id()) {
+            return response()->json([
+                'createResult' => false,
+                'error' => ['id' => '更新できないユーザーです']
+            ], 422);
+        }
+
 
         //バリデーションの検証
         $validationResult = User::updateValidator($request->all());
