@@ -75,7 +75,9 @@ class UsersController extends Controller
             ], 422);
         }
 
-        return response()->json($user->otherPeopleUseEmail($request->email));
+        $user->update($request->all());
+
+        return response()->json(['updateResult' => true]);
     }
 
     /**
