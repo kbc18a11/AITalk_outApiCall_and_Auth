@@ -96,6 +96,19 @@ class User extends Authenticatable implements JWTSubject
         return Validator::make($array, User::$updateRules, User::$ErrorMessages);
     }
 
+    /***
+     * 引数のメールアドレスが既に自分以外の誰かに使用されているかの検証
+     * @param string $email 検証対象のメールアドレス
+     * @return bool メールアドレスの検証結果
+     */
+    public function otherPeopleUseEmail(string $email): bool
+    {
+        //指定されたemailを使用したカラムは存在するか？
+        $user = $this::where('email', $email)->first();
+        //既に使用されたemailか？ && 使用されているemailのユーザーiｄは、更新対象のユーザーidと同じではないか？
+        return $user && $user->id !== $this->id;
+    }
+
     /**
      * JWT トークンに保存する ID を返す
      *
