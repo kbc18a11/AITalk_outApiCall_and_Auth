@@ -25,13 +25,13 @@ class S3
 
     /***
      * S3にファイルが存在するのかを検証、存在すればtrue,存在しなければfalse
-     * @param string $fileName ファイルのパス
+     * @param string $filePath ファイルのパス
      * @return bool
      */
-    public function isFile(string $fileName): bool
+    public function isFile(string $filePath): bool
     {
         //ファイルは存在するか？
-        if ($this->s3Disk->exists($this->folderpath.'/'.$fileName)) return true;
+        if ($this->s3Disk->exists($filePath)) return true;
 
         return false;
     }
@@ -45,7 +45,7 @@ class S3
     public function filUpload($file): string
     {
         //S3にファイルを保存
-        $path =  'https://aitoke.s3-ap-northeast-1.amazonaws.com/' . $this->s3Disk->putFile($this->folderpath, $file, 'public');
+        $path =  $this->s3Disk->putFile($this->folderpath, $file, 'public');
 
         return $path;
     }
