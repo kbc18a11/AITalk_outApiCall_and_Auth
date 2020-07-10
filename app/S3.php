@@ -4,6 +4,7 @@
 namespace App;
 
 use Illuminate\Support\Facades\Storage;
+use phpDocumentor\Reflection\File;
 
 class S3
 {
@@ -38,13 +39,13 @@ class S3
 
     /**
      * S3にファイル保存し、保存したファイルのパスを返す
-     * @param $file
+     * @param File $file ファイル本体
      * @return string
      */
     public function filUpload($file): string
     {
         //S3にファイルを保存
-        $path = $this->s3Disk->putFile($this->folderpath, $file, 'public');
+        $path =  'https://aitoke.s3-ap-northeast-1.amazonaws.com/' . $this->s3Disk->putFile($this->folderpath, $file, 'public');
 
         return $path;
     }
