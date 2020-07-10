@@ -24,13 +24,13 @@ class S3
 
     /***
      * S3にファイルが存在するのかを検証、存在すればtrue,存在しなければfalse
-     * @param string $path ファイルのパス
+     * @param string $fileName ファイルのパス
      * @return bool
      */
-    public function isFile(string $path): bool
+    public function isFile(string $fileName): bool
     {
         //ファイルは存在するか？
-        if ($this->s3Disk->exists($this->folderpath.'/'.$path)) return true;
+        if ($this->s3Disk->exists($this->folderpath.'/'.$fileName)) return true;
 
         return false;
     }
