@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\S3;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -75,7 +76,25 @@ class UsersController extends Controller
             ], 422);
         }
 
-        $user->update($request->all());
+        //S3のマネージャークラスをインスタンス化
+        $s3 = new S3('icon');
+
+        //更新対象のユーザーのアイコンは初期アイコンではないか？ && アイコンはS3内に存在するか？
+        if ($user->icon !== 'icon/default/default_icon.png' && $s3->isFile($user->icon)) {
+            $s3->fileDelete($user->icon);
+        }
+
+        //ファイルアップロード    保存先のURLを取得
+        $iconPath = $s3->filUpload($request->icon);
+
+        //アップデートする値
+        $updateData = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'icon' => $iconPath
+        ];
+        //アップデート
+        $user->update($updateData);
 
         return response()->json(['updateResult' => true]);
     }
