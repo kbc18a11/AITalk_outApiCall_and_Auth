@@ -33,7 +33,7 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'icon' => 'https://aitoke.s3-ap-northeast-1.amazonaws.com/icon/default/default_icon.png',
+            'icon' => 'icon/default/default_icon.png',
         ];
 
         //INSERT文実行
