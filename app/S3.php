@@ -8,8 +8,10 @@ use phpDocumentor\Reflection\File;
 
 class S3
 {
+    //対象とするS3フォルダ
     private $folderpath;
 
+    //S3のインスタンス
     private $s3Disk;
 
     /***
@@ -36,6 +38,14 @@ class S3
         return false;
     }
 
+    /**
+     * 対象のファイルを削除
+     * @param $filePath
+     */
+    public function fileDelete($filePath)
+    {
+        $this->s3Disk->delete($filePath);
+    }
 
     /**
      * S3にファイル保存し、保存したファイルのパスを返す
