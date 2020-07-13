@@ -76,6 +76,18 @@ class UsersController extends Controller
             ], 422);
         }
 
+        //新しいアイコン画像は無かったか？
+        if (!$request->icon){
+            //アップデートする値
+            $updateData = [
+                'name' => $request->name,
+                'email' => $request->email,
+            ];
+            //アップデート
+            $user->update($updateData);
+            return response()->json(['updateResult' => true]);
+        }
+
         //S3のマネージャークラスをインスタンス化
         $s3 = new S3('icon');
 
