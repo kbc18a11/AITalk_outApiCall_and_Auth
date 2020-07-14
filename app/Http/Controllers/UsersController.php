@@ -77,7 +77,7 @@ class UsersController extends Controller
         }
 
         //新しいアイコン画像は無かったか？
-        if (!$request->icon){
+        if (!$request->icon) {
             //アップデートする値
             $updateData = [
                 'name' => $request->name,
