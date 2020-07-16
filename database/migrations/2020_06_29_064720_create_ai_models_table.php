@@ -19,7 +19,7 @@
 						$table->bigInteger('user_id')->unsigned();
 						$table->string('name');
 						$table->string('self_introduction')->nullable(); //自己紹介文
-						$table->string('opne_mouth_image'); //口が開いている顔
+						$table->string('open_mouth_image'); //口が開いている顔
 						$table->string('close_mouth_image'); //口が閉じている顔
 						$table->timestamps();
 
