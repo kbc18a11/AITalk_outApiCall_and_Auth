@@ -3,7 +3,7 @@
         use Illuminate\Support\Facades\Schema;
         use Illuminate\Database\Schema\Blueprint;
         use Illuminate\Database\Migrations\Migration;
-        
+
         class CreateAiModelsTable extends Migration
         {
             /**
@@ -22,9 +22,8 @@
 						$table->string('opne_mouth_image'); //口が開いている顔
 						$table->string('close_mouth_image'); //口が閉じている顔
 						$table->timestamps();
-						$table->softDeletes();
-						
-						
+
+
 
                     //*********************************
                     // Foreign KEY [ Uncomment if you want to use!! ]
@@ -56,4 +55,3 @@
                 Schema::dropIfExists("ai_models");
             }
         }
-    

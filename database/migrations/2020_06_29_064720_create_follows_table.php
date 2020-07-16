@@ -3,7 +3,7 @@
         use Illuminate\Support\Facades\Schema;
         use Illuminate\Database\Schema\Blueprint;
         use Illuminate\Database\Migrations\Migration;
-        
+
         class CreateFollowsTable extends Migration
         {
             /**
@@ -19,8 +19,7 @@
 						$table->integer('user_id')->unsigned(); //フォローをしているユーザー
 						$table->integer('follow_user_id')->unsigned(); //フォローを受けるユーザー
 						$table->timestamps();
-						$table->softDeletes();
-						
+
 						//$table->foreign("user_id")->references("id")->on("users");
 						//$table->foreign("follow_user_id")->references("id")->on("users");
 
@@ -50,4 +49,3 @@
                 Schema::dropIfExists("follows");
             }
         }
-    

@@ -3,7 +3,7 @@
         use Illuminate\Support\Facades\Schema;
         use Illuminate\Database\Schema\Blueprint;
         use Illuminate\Database\Migrations\Migration;
-        
+
         class CreateAiModelCommentsTable extends Migration
         {
             /**
@@ -20,8 +20,7 @@
 						$table->integer('user_id')->unsigned();
 						$table->string('comment');
 						$table->timestamps();
-						$table->softDeletes();
-						
+
 						//$table->foreign("ai_model_is")->references("id")->on("ai_models");
 						//$table->foreign("user_id")->references("id")->on("users");
 
@@ -51,4 +50,3 @@
                 Schema::dropIfExists("ai_model_comments");
             }
         }
-    
