@@ -38,6 +38,9 @@ Route::group(['middleware' => ['api']], function () {
     //ユーザー関係
     Route::resource('user', 'UsersController', ['only' => ['index', 'show']]);
 
+    //Aiのキャラクター関係
+    Route::resource('aimodel', 'AiModelsController');
+
     //認証必須
     Route::group(['middleware' => ['jwt.auth']], function () {
         //自ユーザー情報取得
