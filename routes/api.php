@@ -35,7 +35,7 @@ Route::group(['middleware' => ['api']], function () {
     //ログイン
     Route::post('login', 'AuthController@login');
 
-    //
+    //ユーザー関係
     Route::resource('user', 'UsersController', ['only' => ['index', 'show']]);
 
     //認証必須
