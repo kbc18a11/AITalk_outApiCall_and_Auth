@@ -46,7 +46,7 @@ class User extends Authenticatable implements JWTSubject
      */
     private static $createRules = [
         'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'email', 'max:255','unique:users'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         'password' => ['required', 'string', 'min:8', 'confirmed'],
     ];
 
@@ -64,7 +64,7 @@ class User extends Authenticatable implements JWTSubject
      * バリデーションルールごとののエラーメッセージ
      * @var array
      */
-    private static $ErrorMessages = [
+    private static $errorMessages = [
         'required' => '必須項目です。',
         'max' => '255文字以下入力してください',
         'min' => '8文字以上入力してください',
@@ -82,7 +82,7 @@ class User extends Authenticatable implements JWTSubject
     public static function createValidator(array $array)
     {
         # code...
-        return Validator::make($array, self::$createRules, self::$ErrorMessages);
+        return Validator::make($array, self::$createRules, self::$errorMessages);
     }
 
     /**
@@ -93,7 +93,7 @@ class User extends Authenticatable implements JWTSubject
     public static function updateValidator(array $array)
     {
         # code...
-        return Validator::make($array, self::$updateRules, self::$ErrorMessages);
+        return Validator::make($array, self::$updateRules, self::$errorMessages);
     }
 
     /***
