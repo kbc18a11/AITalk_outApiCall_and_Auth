@@ -82,7 +82,7 @@ class User extends Authenticatable implements JWTSubject
     public static function createValidator(array $array)
     {
         # code...
-        return Validator::make($array, User::$createRules, User::$ErrorMessages);
+        return Validator::make($array, self::$createRules, self::$ErrorMessages);
     }
 
     /**
@@ -93,7 +93,7 @@ class User extends Authenticatable implements JWTSubject
     public static function updateValidator(array $array)
     {
         # code...
-        return Validator::make($array, User::$updateRules, User::$ErrorMessages);
+        return Validator::make($array, self::$updateRules, self::$ErrorMessages);
     }
 
     /***
@@ -104,7 +104,7 @@ class User extends Authenticatable implements JWTSubject
     public function otherPeopleUseEmail(string $email): bool
     {
         //指定されたemailを使用したカラムは存在するか？
-        $user = $this::where('email', $email)->first();
+        $user = self::where('email', $email)->first();
         //既に使用されたemailか？ && 使用されているemailのユーザーiｄは、更新対象のユーザーidと同じではないか？
         return $user && $user->id !== $this->id;
     }
