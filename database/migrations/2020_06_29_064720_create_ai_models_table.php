@@ -15,9 +15,9 @@
             {
                 Schema::create("ai_models", function (Blueprint $table) {
 
-						$table->increments('id');
+						$table->id();
 						$table->bigInteger('user_id')->unsigned();
-						$table->string('name');
+						$table->string('name')->unique();
 						$table->string('self_introduction')->nullable(); //自己紹介文
 						$table->string('open_mouth_image'); //口が開いている顔
 						$table->string('close_mouth_image'); //口が閉じている顔
