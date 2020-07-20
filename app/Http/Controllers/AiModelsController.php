@@ -46,10 +46,17 @@ class AiModelsController extends Controller
         $s3 = new S3('aimodel/closemouthimage');
         $closeMouthImagePath = $s3->filUpload($request->close_mouth_image);
 
+        $createParam = [
+            'user_id' => Auth::id(),
+            'name' => $request->name,
+            'self_introduction' => $request->self_introduction,
+            'open_mouth_image' => $openMouthImagePath,
+            'close_mouth_image' => $closeMouthImagePath
+        ];
+        AiModel::create($createParam);
 
         return response()->json([
-            'open' => $openMouthImagePath,
-            'close' => $closeMouthImagePath
+            'createResult' => true,
         ]);
     }
 

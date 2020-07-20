@@ -7,7 +7,16 @@ use Illuminate\Support\Facades\Validator;
 
 class AiModel extends Model
 {
-    //
+    /**
+     * 保存を操作するカラム
+     * @var array
+     */
+    protected $fillable = [
+        'user_id', 'name', 'self_introduction',
+        'open_mouth_image', 'close_mouth_image'
+    ];
+
+
     /**
      * 登録のバリデーションの条件
      * @var array
