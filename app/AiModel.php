@@ -13,7 +13,6 @@ class AiModel extends Model
      * @var array
      */
     private static $createRules = [
-        'user_id' => ['required', 'integer', 'exists:users,id'],
         'name' => ['required', 'string', 'max:255', 'unique:ai_models'],
         'self_introduction' => ['string', 'max:255'],
         'open_mouth_image' => ['required', 'image'],
