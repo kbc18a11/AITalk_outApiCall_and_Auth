@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\AiModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\S3;
 
 class AiModelsController extends Controller
 {
@@ -35,6 +37,11 @@ class AiModelsController extends Controller
                 'error' => $validationResult->messages()
             ], 422);
         }
+
+        //口を開けた画像(open_mouth_image)の保存処理
+        $s3 = new S3('aiModel/openMouth');
+        $openMouthImagePath = $s3->filUpload($request->open_mouth_image);
+        
 
         return response()->json(['aa' => 'aa']);
     }
