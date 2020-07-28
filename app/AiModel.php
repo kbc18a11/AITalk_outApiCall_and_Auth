@@ -43,6 +43,15 @@ class AiModel extends Model
     ];
 
     /**
+     * ページネーション用のデータを取得
+     * @return mixed
+     */
+    public static function getPaginateData()
+    {
+        return self::orderBy('updated_at')->paginate(5);
+    }
+
+    /**
      * ユーザー登録のパラメータのバリデーションの検証
      * @param array
      * @return \Illuminate\Contracts\Validation\Validator
