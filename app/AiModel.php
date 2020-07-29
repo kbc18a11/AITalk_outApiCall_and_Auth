@@ -48,7 +48,7 @@ class AiModel extends Model
      */
     public static function getPaginateData()
     {
-        return self::orderBy('updated_at')->paginate(5);
+        return self::orderBy('updated_at','desc')->paginate(5);
     }
 
     /**
