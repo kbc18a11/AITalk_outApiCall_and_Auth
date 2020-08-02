@@ -14,8 +14,14 @@ class AiModelsController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
+        //getパラメータ user_idは存在しているか？
+        if (!empty($request->user_id)) {
+            return response()->json(AiModel::getPaginateData($request->user_id));
+        }
+
+        //何も指定がなかった場合
         return response()->json(AiModel::getPaginateData());
     }
 

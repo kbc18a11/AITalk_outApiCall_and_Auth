@@ -44,11 +44,21 @@ class AiModel extends Model
 
     /**
      * ページネーション用のデータを取得
+     * @param int $user_id ユーザーid
      * @return mixed
      */
-    public static function getPaginateData()
+    public static function getPaginateData(int $user_id = 0)
     {
-        return self::orderBy('updated_at','desc')->paginate(5);
+        $query = self::query();
+
+        //ユーザーidの指定はあるか？
+        if ($user_id) {
+            //ユーザーidが一致しているものを検索
+            $query->where('user_id', $user_id);
+        }
+        
+        $paginateNumber = 5;//ページネーションで取得する個数
+        return $query->orderBy('updated_at', 'desc')->paginate($paginateNumber);
     }
 
     /**
