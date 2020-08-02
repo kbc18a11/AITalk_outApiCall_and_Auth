@@ -19,11 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => ['api']], function () {
-    //未認証ユーザーの飛ばす先
-    Route::get('/', function () {
-        return response()->json(['error' => 'unauthorized'], 401);
-    })->name('login');
-
     //AIBOTAPIサービス関係
     Route::resource('talkText', 'NobyAPIController');
 
