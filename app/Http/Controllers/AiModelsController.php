@@ -26,6 +26,25 @@ class AiModelsController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param \App\AiModel $aiModel
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show($id)
+    {
+        //
+        //idのユーザーをインスタンス化
+        $aimodel = AiModel::find($id);
+        if (!$aimodel) return response()->json([
+            'createResult' => false,
+            'error' => ['id' => '存在しないidです']
+        ], 422);
+
+        return response()->json($aimodel);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
@@ -66,16 +85,6 @@ class AiModelsController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\AiModel $aiModel
-     * @return \Illuminate\Http\Response
-     */
-    public function show(AiModel $aiModel)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
