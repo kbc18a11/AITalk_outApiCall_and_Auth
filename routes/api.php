@@ -34,7 +34,7 @@ Route::group(['middleware' => ['api']], function () {
     Route::resource('user', 'UsersController', ['only' => ['index', 'show']]);
 
     //Aiのキャラクター関係
-    Route::resource('aimodel', 'AiModelsController',['only' => ['index','show']]);
+    Route::resource('aimodel', 'AiModelsController', ['only' => ['index', 'show']]);
 
     //認証必須
     Route::group(['middleware' => ['jwt.auth']], function () {
@@ -45,6 +45,12 @@ Route::group(['middleware' => ['api']], function () {
         Route::resource('user', 'UsersController', ['only' => ['update']]);
 
         //Aiのキャラクター関係
-        Route::resource('aimodel', 'AiModelsController', ['only' => ['store','update']]);
+        Route::resource('aimodel', 'AiModelsController', ['only' => ['store', 'update']]);
+
+        //Aiモデルのコメント関係
+        //Route::resource('aimodelcomment', 'AiModelCommentsController', ['only' => ['destroy']]);
+        //コメント作成
+        Route::post('aimodelcomment/{id}', 'AiModelCommentsController@store');
+
     });
 });
