@@ -9,13 +9,21 @@ class AiModelComments extends Model
 {
     //
     /**
+     * 保存を操作するカラム
+     * @var array
+     */
+    protected $fillable = [
+        'ai_model_id', 'user_id', 'comment'
+    ];
+
+    /**
      * 登録のバリデーションの条件
      * @var array
      */
     private static $createRules = [
         'ai_model_id' => ['required', 'integer', 'exists:ai_models,id'],
         'user_id' => ['required', 'integer', 'unique:ai_model_comments,user_id'],
-        'comment' => ['required','max:255']
+        'comment' => ['required', 'max:255']
     ];
 
     /**
