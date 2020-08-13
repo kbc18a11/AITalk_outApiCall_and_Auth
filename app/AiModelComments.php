@@ -13,7 +13,9 @@ class AiModelComments extends Model
      * @var array
      */
     private static $createRules = [
-        'ai_model_id' => ['required','integer','exists:ai_model_is,id','unique:'],
+        'ai_model_id' => ['required', 'integer', 'exists:ai_models,id'],
+        'user_id' => ['required', 'integer', 'unique:ai_model_comments,user_id'],
+        'comment' => ['required','max:255']
     ];
 
     /**
@@ -22,10 +24,11 @@ class AiModelComments extends Model
      */
     private static $errorMessages = [
         'required' => '必須項目です。',
+        'exists' => '存在しないAiモデルです。',
         'integer' => '数値を入力してください',
         'string' => '文字を入力してください',
-        'max' => '255文字以下入力してください',
-        'unique' => '既にほかのキャラクターが利用しています',
+        'unique' => '既にお気に入り登録しています',
+        'max' => '255文字以下で入力してください'
     ];
 
     /**
