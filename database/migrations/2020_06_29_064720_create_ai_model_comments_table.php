@@ -16,7 +16,7 @@
                 Schema::create("ai_model_comments", function (Blueprint $table) {
 
 						$table->increments('id');
-						$table->integer('ai_model_is')->unsigned();
+						$table->integer('ai_model_id')->unsigned();
 						$table->integer('user_id')->unsigned();
 						$table->string('comment');
 						$table->timestamps();
