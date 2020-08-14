@@ -36,13 +36,18 @@ Route::group(['middleware' => ['api']], function () {
     //Aiモデル関係
     Route::resource('aimodel', 'AiModelsController', ['only' => ['index', 'show']]);
 
+    //Aiモデルコメント取得
+    Route::get('aimodel/{ai_model_id}/aimodelcomment', 'AiModelCommentsController@show');
 
     //認証必須
     Route::group(['middleware' => ['jwt.auth']], function () {
         //自ユーザー情報取得
         Route::get('me', 'AuthController@me');
+
+        //ログアウト
         Route::post('logout', 'AuthController@logout');
 
+        //自ユーザー情報更新
         Route::resource('user', 'UsersController', ['only' => ['update']]);
 
         //Aiモデル関係
@@ -51,7 +56,7 @@ Route::group(['middleware' => ['api']], function () {
         //Aiモデルのコメント関係
         Route::resource('aimodelcomment', 'AiModelCommentsController', ['only' => ['update','destroy']]);
         //Aiモデルのコメント作成
-        Route::post('aimodel/{aiModel_id}/aimodelcomment', 'AiModelCommentsController@store');
+        Route::post('aimodel/{ai_model_id}/aimodelcomment', 'AiModelCommentsController@store');
 
     });
 });
