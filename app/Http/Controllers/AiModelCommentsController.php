@@ -24,12 +24,12 @@ class AiModelCommentsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request, int $id)
+    public function store(Request $request)
     {
         //
         //バリデーションの検証
         $validationResult = AiModelComments::createValidator([
-            'ai_model_id' => $id,
+            'ai_model_id' => $request->ai_model_id,
             'user_id' => Auth::id(),
             'comment' => $request->comment
         ]);
@@ -43,7 +43,7 @@ class AiModelCommentsController extends Controller
         }
         //コメントを保存
         $createParam = [
-            'ai_model_id' => $id,
+            'ai_model_id' => $request->ai_model_id,
             'user_id' => Auth::id(),
             'comment' => $request->comment
         ];
