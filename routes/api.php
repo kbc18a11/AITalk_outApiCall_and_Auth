@@ -33,8 +33,9 @@ Route::group(['middleware' => ['api']], function () {
     //ユーザー関係
     Route::resource('user', 'UsersController', ['only' => ['index', 'show']]);
 
-    //Aiのキャラクター関係
+    //Aiモデル関係
     Route::resource('aimodel', 'AiModelsController', ['only' => ['index', 'show']]);
+
 
     //認証必須
     Route::group(['middleware' => ['jwt.auth']], function () {
@@ -44,7 +45,7 @@ Route::group(['middleware' => ['api']], function () {
 
         Route::resource('user', 'UsersController', ['only' => ['update']]);
 
-        //Aiのキャラクター関係
+        //Aiモデル関係
         Route::resource('aimodel', 'AiModelsController', ['only' => ['store', 'update']]);
 
         //Aiモデルのコメント関係
