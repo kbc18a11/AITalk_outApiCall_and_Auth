@@ -24,13 +24,12 @@ class AiModelCommentsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request, int $id)
     {
         //
         //バリデーションの検証
         $validationResult = AiModelComments::createValidator([
-            'ai_model_id' => $request->ai_model_id,
-            'user_id' => Auth::id(),
+            'ai_model_id' => $id,
             'comment' => $request->comment
         ]);
         //バリデーションの結果が駄目か？
@@ -43,7 +42,7 @@ class AiModelCommentsController extends Controller
         }
         //コメントを保存
         $createParam = [
-            'ai_model_id' => $request->ai_model_id,
+            'ai_model_id' => $id,
             'user_id' => Auth::id(),
             'comment' => $request->comment
         ];
@@ -59,9 +58,38 @@ class AiModelCommentsController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
+    public function update(Request $request, int $id)
+    {
+        $aiModelComments = AiModelComments::find($id);
+        //指定したidのコメントは存在していなか？
+        // &&　指定したコメントのuserとリクエストしたユーザーとのidは違うか？
+        if (!$aiModelComments
+            || $aiModelComments->user_id !== Auth::id()) {
+            return response()->json([
+                'updateResult' => false,
+                'error' => ['id' => '更新できないコメントです']
+            ], 422);
+        }
+
+        //バリデーションの検証
+        $validationResult =
+            AiModelComments::updateValidator($request->all());
+        //バリデーションの結果が駄目か？
+        if ($validationResult->fails()) {
+            # code...
+            return response()->json([
+                'updateResult' => false,
+                'error' => $validationResult->messages()
+            ], 422);
+        }
+
+        //コメントの更新を実行
+        $aiModelComments->update($request->all());
+        return response()->json(['createResult' => true]);
+    }
 
     /**
      * Remove the specified resource from storage.

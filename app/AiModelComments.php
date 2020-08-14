@@ -22,7 +22,14 @@ class AiModelComments extends Model
      */
     private static $createRules = [
         'ai_model_id' => ['required', 'integer', 'exists:ai_models,id'],
-        'user_id' => ['required', 'integer'],
+        'comment' => ['required', 'max:255']
+    ];
+
+    /**
+     * 更新のバリデーションの条件
+     * @var array
+     */
+    private static $updateRules = [
         'comment' => ['required', 'max:255']
     ];
 
@@ -39,7 +46,7 @@ class AiModelComments extends Model
     ];
 
     /**
-     * ユーザー登録のパラメータのバリデーションの検証
+     * コメント作成のパラメータのバリデーションの検証
      * @param array
      * @return \Illuminate\Contracts\Validation\Validator
      */
@@ -47,5 +54,16 @@ class AiModelComments extends Model
     {
         # code...
         return Validator::make($array, self::$createRules, self::$errorMessages);
+    }
+
+    /**
+     * コメント内容更新のパラメータのバリデーションの検証
+     * @param array
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    public static function updateValidator(array $array)
+    {
+        # code...
+        return Validator::make($array, self::$updateRules, self::$errorMessages);
     }
 }
