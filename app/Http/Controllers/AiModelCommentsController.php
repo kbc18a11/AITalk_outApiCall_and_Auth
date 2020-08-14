@@ -20,16 +20,16 @@ class AiModelCommentsController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param int $id
      * @param \Illuminate\Http\Request $request
+     * @param int $aiModel_id コメントをするAiモデルのid
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request, int $id)
+    public function store(Request $request, int $aiModel_id)
     {
         //
         //バリデーションの検証
         $validationResult = AiModelComments::createValidator([
-            'ai_model_id' => $id,
+            'ai_model_id' => $aiModel_id,
             'comment' => $request->comment
         ]);
         //バリデーションの結果が駄目か？
@@ -42,7 +42,7 @@ class AiModelCommentsController extends Controller
         }
         //コメントを保存
         $createParam = [
-            'ai_model_id' => $id,
+            'ai_model_id' => $aiModel_id,
             'user_id' => Auth::id(),
             'comment' => $request->comment
         ];
