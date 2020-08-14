@@ -22,7 +22,7 @@ class AiModelComments extends Model
      */
     private static $createRules = [
         'ai_model_id' => ['required', 'integer', 'exists:ai_models,id'],
-        'user_id' => ['required', 'integer', 'unique:ai_model_comments,user_id'],
+        'user_id' => ['required', 'integer'],
         'comment' => ['required', 'max:255']
     ];
 
@@ -35,7 +35,6 @@ class AiModelComments extends Model
         'exists' => '存在しないAiモデルです。',
         'integer' => '数値を入力してください',
         'string' => '文字を入力してください',
-        'unique' => '既にお気に入り登録しています',
         'max' => '255文字以下で入力してください'
     ];
 
