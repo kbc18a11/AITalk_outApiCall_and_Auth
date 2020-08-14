@@ -61,6 +61,12 @@ class AiModelCommentsController extends Controller
 
     }
 
+    /**
+     * Update the specified resource in storage.
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(Request $request, int $id)
     {
         $aiModelComments = AiModelComments::find($id);
@@ -88,17 +94,32 @@ class AiModelCommentsController extends Controller
 
         //コメントの更新を実行
         $aiModelComments->update($request->all());
-        return response()->json(['createResult' => true]);
+        return response()->json(['updateResult' => true]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
+     * @param Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
         //
+        $aiModelComments = AiModelComments::find($id);
+        //指定したidのコメントは存在していなか？
+        // &&　指定したコメントのuserとリクエストしたユーザーとのidは違うか？
+        if (!$aiModelComments
+            || $aiModelComments->user_id !== Auth::id()) {
+            return response()->json([
+                'deleteResult' => false,
+                'error' => ['id' => '削除できないコメントです']
+            ], 422);
+        }
+
+        //コメントの削除を実行
+        $aiModelComments->delete();
+        return response()->json(['deleteResult' => true]);
     }
 }
