@@ -49,6 +49,7 @@ Route::group(['middleware' => ['api']], function () {
 
         //Aiモデルのコメント関係
         Route::resource('aimodelcomment', 'AiModelCommentsController', ['only' => ['update','destroy']]);
+        //Aiモデルのコメント作成
         Route::post('aimodel/{aiModel_id}/aimodelcomment', 'AiModelCommentsController@store');
 
     });
