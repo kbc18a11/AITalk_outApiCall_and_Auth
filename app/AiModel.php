@@ -71,5 +71,13 @@ class AiModel extends Model
         $paginateNumber = 5;//ページネーションで取得する個数
         return $query->orderBy('updated_at', 'desc')->paginate($paginateNumber);
     }
-    
+
+    /**
+     * idからAiModelCommentsの外部キー（ai_model_id）のコメントを取得
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getComments()
+    {
+        return $this->hasMany('App\AiModelComments')->get();
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AiModel;
 use App\AiModelComments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -51,14 +52,24 @@ class AiModelCommentsController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Aiモデルのid(ai_model_id)ごとにコメントを取得
      *
      * @param int $ai_model_id
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(int $ai_model_id)
     {
+        //指定されたAIモデルのidからインスタンス化
+        $aiModel = AiModel::find($ai_model_id);
 
+        //指定したAIモデルは存在していないか？
+        if (!$ai_model_id){
+            return response()->json([
+                'error' => ['id' => '存在しないAIモデルです']
+            ], 422);
+        }
+
+        return response()->json($aiModel->getComments());
     }
 
     /**
