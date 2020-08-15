@@ -43,6 +43,17 @@ class AiModel extends Model
     ];
 
     /**
+     * ユーザー登録のパラメータのバリデーションの検証
+     * @param array
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    public static function createValidator(array $array)
+    {
+        # code...
+        return Validator::make($array, self::$createRules, self::$errorMessages);
+    }
+
+    /**
      * ページネーション用のデータを取得
      * @param int $user_id ユーザーid
      * @return mixed
@@ -56,19 +67,9 @@ class AiModel extends Model
             //ユーザーidが一致しているものを検索
             $query->where('user_id', $user_id);
         }
-        
+
         $paginateNumber = 5;//ページネーションで取得する個数
         return $query->orderBy('updated_at', 'desc')->paginate($paginateNumber);
     }
-
-    /**
-     * ユーザー登録のパラメータのバリデーションの検証
-     * @param array
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    public static function createValidator(array $array)
-    {
-        # code...
-        return Validator::make($array, self::$createRules, self::$errorMessages);
-    }
+    
 }
