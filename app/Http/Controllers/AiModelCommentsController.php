@@ -53,10 +53,10 @@ class AiModelCommentsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param int $ai_model_id
+     * @return void
      */
-    public function show($ai_model_id)
+    public function show(int $ai_model_id)
     {
 
     }
