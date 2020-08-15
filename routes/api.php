@@ -22,8 +22,6 @@ Route::group(['middleware' => ['api']], function () {
     //AIBOTAPIサービス関係
     Route::resource('talkText', 'NobyAPIController');
 
-    Route::resource('talkVoice', 'AmazonPollyController');
-
     //ユーザー登録
     Route::post('/register', 'RegisterController@create');
 
