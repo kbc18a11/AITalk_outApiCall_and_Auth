@@ -74,10 +74,12 @@ class AiModel extends Model
 
     /**
      * idからAiModelCommentsの外部キー（ai_model_id）のコメントを取得
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function getComments()
     {
-        return $this->hasMany('App\AiModelComments')->get();
+        $paginateNumber = 5;//ページネーションで取得する個数
+        return $this->hasMany('App\AiModelComments')
+            ->orderBy('updated_at', 'desc')->paginate($paginateNumber);
     }
 }
