@@ -47,8 +47,11 @@ class AiModelCommentsController extends Controller
             'user_id' => Auth::id(),
             'comment' => $request->comment
         ];
-        AiModelComments::create($createParam);
-        return response()->json(['createResult' => true]);
+        $createdComment = AiModelComments::create($createParam);
+        //新しく作成したコメントのデータも返す
+        return response()->json(
+            ['createResult' => true,
+                'createdComment' => $createdComment]);
     }
 
     /**
@@ -63,7 +66,7 @@ class AiModelCommentsController extends Controller
         $aiModel = AiModel::find($ai_model_id);
 
         //指定したAIモデルは存在していないか？
-        if (!$ai_model_id){
+        if (!$ai_model_id) {
             return response()->json([
                 'error' => ['id' => '存在しないAIモデルです']
             ], 422);
@@ -115,7 +118,7 @@ class AiModelCommentsController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request,$id)
+    public function destroy(Request $request, $id)
     {
         //
         $aiModelComments = AiModelComments::find($id);
