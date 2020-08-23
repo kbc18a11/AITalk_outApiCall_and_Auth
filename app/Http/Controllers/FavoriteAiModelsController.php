@@ -53,6 +53,7 @@ class FavoriteAiModelsController extends Controller
 
         return response()->json(['createResult' => true]);
     }
+
     /**
      * Display the specified resource.
      *
@@ -65,25 +66,27 @@ class FavoriteAiModelsController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param int $id いいねのid
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
-        //
+        //idをもとにインスタンス化
+        $favoriteAiModel = FavoriteAiModel::find($id);
+        //インスタンス化されているか？
+        // || ユーザーidと利用ユーザーidは一致してないか？
+        if (!$favoriteAiModel ||
+            $favoriteAiModel->user_id !== Auth::id()) {
+            # code...
+            return response()->json([
+                'deleteResult' => false,
+                'error' => ['id' => 'いいねを解除できません']
+            ], 422);
+        }
+
+        $favoriteAiModel->delete();
+        return response()->json(['deleteResult' => true]);
     }
 }

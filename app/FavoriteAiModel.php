@@ -52,8 +52,9 @@ class FavoriteAiModel extends Model
     {
         # code...
         return Validator::make(
-            $array, self::createRules($array['ai_model_id'],$array['user_id']),
+            $array, self::createRules($array['ai_model_id'], $array['user_id']),
             self::$errorMessages
         );
     }
+
 }
