@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\FavoriteAiModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FavoriteAiModelsController extends Controller
 {
@@ -16,31 +18,44 @@ class FavoriteAiModelsController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param int $ai_model_id AIモデルのid
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(int $ai_model_id, Request $request)
     {
-        //
-    }
+        //バリエーションの検証用データ構築
+        $validationData = $request->all();
+        $validationData['ai_model_id'] = $ai_model_id;
 
+        //バリデーションの検証
+        $validationResult = FavoriteAiModel::createValidator($validationData);
+        //バリデーションの結果が駄目か？
+        if ($validationResult->fails()) {
+            # code...
+            return response()->json([
+                'createResult' => false,
+                'error' => $validationResult->messages()
+            ], 422);
+        }
+
+        //いいね登録
+        $createParam = [
+            'ai_model_id' => $ai_model_id,
+            'user_id' => Auth::id()
+        ];
+        FavoriteAiModel::create($createParam);
+
+        return response()->json(['createResult' => true]);
+    }
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -49,21 +64,10 @@ class FavoriteAiModelsController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -74,7 +78,7 @@ class FavoriteAiModelsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
