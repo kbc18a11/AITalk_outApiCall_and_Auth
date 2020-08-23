@@ -31,6 +31,7 @@ class FavoriteAiModelsController extends Controller
         //バリエーションの検証用データ構築
         $validationData = $request->all();
         $validationData['ai_model_id'] = $ai_model_id;
+        $validationData['user_id'] = Auth::id();
 
         //バリデーションの検証
         $validationResult = FavoriteAiModel::createValidator($validationData);
