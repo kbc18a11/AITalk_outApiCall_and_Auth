@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\FavoriteAiModel;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -54,15 +55,34 @@ class FavoriteAiModelsController extends Controller
         return response()->json(['createResult' => true]);
     }
 
+
     /**
-     * Display the specified resource.
+     * ユーザーのお気に入り登録情報取得
      *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param int $ai_model_id 対象のAIモデルのid
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(int $ai_model_id)
     {
-        //
+        //バリデーションの検証
+        $validationResult = FavoriteAiModel
+            ::getUserFavorValidator(['ai_model_id' => $ai_model_id]);
+
+        //バリデーションの結果が駄目か？
+        if ($validationResult->fails()) {
+            # code...
+            return response()->json([
+                'getResult' => false,
+                'error' => $validationResult->messages()
+            ], 422);
+        }
+
+        //ユーザーをインスタンス化
+        $user = User::find(Auth::id());
+        //お気に入り登録の情報を取得
+        $favoriteData = $user->getRegisterFavoriteAiModel($ai_model_id);
+
+        return response()->json(['getResult' => true, 'favoriteData' => $favoriteData]);
     }
 
     /**

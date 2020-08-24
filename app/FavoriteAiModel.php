@@ -26,6 +26,10 @@ class FavoriteAiModel extends Model
         'unique' => '既にお気に入り登録しています'
     ];
 
+    private static $getUserFavoriteRules = [
+        'ai_model_id' => ['required','exists:ai_models,id']
+    ];
+
     /**
      * 登録のバリデーションの条件
      * @param int $ai_model_id
@@ -44,6 +48,20 @@ class FavoriteAiModel extends Model
     }
 
     /**
+     * ユーザーのお気に入り取得のパラメータのバリデーションの検証
+     * @param array
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    public static function getUserFavorValidator(array $array)
+    {
+        # code...
+        return Validator::make(
+            $array, self::$getUserFavoriteRules,
+            self::$errorMessages
+        );
+    }
+
+    /**
      * 登録のパラメータのバリデーションの検証
      * @param array
      * @return \Illuminate\Contracts\Validation\Validator
@@ -56,5 +74,4 @@ class FavoriteAiModel extends Model
             self::$errorMessages
         );
     }
-
 }

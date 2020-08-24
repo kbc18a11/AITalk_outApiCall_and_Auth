@@ -128,4 +128,15 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    /**
+     * 指定されたAIモデルのお気に入り登録情報の取得
+     * @param int $ai_model_id
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getRegisterFavoriteAiModel(int $ai_model_id)
+    {
+        return $this->hasMany('App\FavoriteAiModel')
+            ->where('ai_model_id', $ai_model_id)->get();
+    }
 }

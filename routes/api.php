@@ -56,5 +56,11 @@ Route::group(['middleware' => ['api']], function () {
         //Aiモデルのコメント作成
         Route::post('aimodel/{ai_model_id}/aimodelcomment', 'AiModelCommentsController@store');
 
+        //Aiモデルのお気に入り実行
+        Route::post('aimodel/{ai_model_id}/favorite','FavoriteAiModelsController@store');
+        //AIモデルのお気に入り解除
+        Route::delete('aimodel/favorite/{id}','FavoriteAiModelsController@destroy');
+        //AIモデルのユーザーのお気に入り情報取得
+        Route::get('aimodel/{ai_model_id}/favorite/user','FavoriteAiModelsController@show');
     });
 });
