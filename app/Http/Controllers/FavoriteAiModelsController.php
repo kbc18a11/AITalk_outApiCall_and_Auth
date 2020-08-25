@@ -50,9 +50,10 @@ class FavoriteAiModelsController extends Controller
             'ai_model_id' => $ai_model_id,
             'user_id' => Auth::id()
         ];
-        FavoriteAiModel::create($createParam);
+        //insertを実行し、保存場を取得
+        $favoriteData = FavoriteAiModel::create($createParam);
 
-        return response()->json(['createResult' => true]);
+        return response()->json(['createResult' => true, 'favoriteData' => $favoriteData]);
     }
 
 
