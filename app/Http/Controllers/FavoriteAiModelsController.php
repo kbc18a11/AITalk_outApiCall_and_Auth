@@ -58,7 +58,8 @@ class FavoriteAiModelsController extends Controller
 
 
     /**
-     * ユーザーのお気に入り登録情報取得
+     * AIモデルにたいするお気に入り情報を習得
+     * /aimodel/{ai_model_id}/favorite/user
      *
      * @param int $ai_model_id 対象のAIモデルのid
      * @return \Illuminate\Http\JsonResponse
@@ -81,7 +82,7 @@ class FavoriteAiModelsController extends Controller
         //ユーザーをインスタンス化
         $user = User::find(Auth::id());
         //お気に入り登録の情報を取得
-        $favoriteData = $user->getRegisterFavoriteAiModel($ai_model_id);
+        $favoriteData = $user->getRegisterFavoriteAiModel($ai_model_id)[0];
 
         return response()->json(['getResult' => true, 'favoriteData' => $favoriteData]);
     }
