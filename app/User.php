@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -127,6 +128,22 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+     * ユーザーがお気に入り登録したAIモデルの情報を習得
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function getFavoriteAiModelData()
+    {
+        $paginateNumber = 5;//ページネーションで取得する個数
+        return AiModel::select(['ai_models.id', 'ai_models.name', 'ai_models.close_mouth_image'])
+            ->join('favorite_ai_models', 'ai_models.id', '=', 'favorite_ai_models.ai_model_id')
+            //自分のユーザーidとお気に入り情報のuser_id一致するものに絞る
+            ->where('favorite_ai_models.user_id', $this->id)
+            //新しくお気に入り登録した順番にソート
+            ->orderBy('favorite_ai_models.created_at', 'desc')
+            ->paginate($paginateNumber);
     }
 
     /**

@@ -10,13 +10,18 @@ use Illuminate\Support\Facades\Auth;
 class FavoriteAiModelsController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * ユーザーのお気に入り情報一覧を習得
+     *　user/aimodel/favorite
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        //ユーザーをインスタンス化
+        $user = User::find(Auth::id());
+        //お気に入り登録の情報を取得
+        $favoriteData = $user->getFavoriteAiModelData();
+
+        return response()->json(['getResult' => true, 'favoriteData' => $favoriteData]);
     }
 
 

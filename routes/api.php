@@ -62,5 +62,7 @@ Route::group(['middleware' => ['api']], function () {
         Route::delete('aimodel/favorite/{id}','FavoriteAiModelsController@destroy');
         //AIモデルのユーザーのお気に入り情報取得
         Route::get('aimodel/{ai_model_id}/favorite/user','FavoriteAiModelsController@show');
+        //ユーザーのお気に入りしたAIモデルの情報一覧を習得
+        Route::get('favorite','FavoriteAiModelsController@index');
     });
 });
