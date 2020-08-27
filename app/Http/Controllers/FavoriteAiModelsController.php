@@ -21,7 +21,7 @@ class FavoriteAiModelsController extends Controller
         //お気に入り登録の情報を取得
         $favoriteData = $user->getFavoriteAiModelData();
 
-        return response()->json(['getResult' => true, 'favoriteData' => $favoriteData]);
+        return response()->json($favoriteData);
     }
 
 
