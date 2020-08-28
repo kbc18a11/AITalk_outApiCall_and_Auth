@@ -19,6 +19,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => ['api']], function () {
+    //Route [login] not defined. 対策
+    Route::get('/', function () {
+        return view('index');
+    })->name('login');
+
     //AIBOTAPIサービス関係
     Route::resource('talkText', 'NobyAPIController');
 
