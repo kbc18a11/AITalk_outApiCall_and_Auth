@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class AiModel extends Model
@@ -78,8 +79,17 @@ class AiModel extends Model
      */
     public function getComments()
     {
+        DB::enableQueryLog();
         $paginateNumber = 5;//ページネーションで取得する個数
-        return $this->hasMany('App\AiModelComments')
-            ->orderBy('updated_at', 'desc')->paginate($paginateNumber);
+
+        //コメントの情報とそのコメントをしたユーザーの情報を取得
+        return AiModelComments::select(['ai_model_comments.id', 'ai_model_comments.comment', 'ai_model_comments.created_at',
+            'ai_model_comments.user_id', 'users.name', 'users.icon'])
+            ->join('users', 'ai_model_comments.user_id', '=', 'users.id')
+            ->where('ai_model_comments.ai_model_id', $this->id)
+            ->orderBy('ai_model_comments.created_at', 'desc')
+            ->paginate($paginateNumber);
+
+        return DB::getQueryLog();
     }
 }
