@@ -57,16 +57,26 @@ class AiModel extends Model
     /**
      * ページネーション用のデータを取得
      * @param int $user_id ユーザーid
+     * @param string $serchWord　検索ワード (name,self_introductionを対象)
      * @return mixed
      */
-    public static function getPaginateData(int $user_id = 0)
+    public static function getPaginateData(int $user_id = 0, string $serchWord = '')
     {
+
         $query = self::query();
 
         //ユーザーidの指定はあるか？
         if ($user_id) {
             //ユーザーidが一致しているものを検索
             $query->where('user_id', $user_id);
+        }
+
+        //検索の指定はあるか？
+        if ($serchWord) {
+            //名前が部分一致しているものを検索
+            $query->where('name', 'like', "%$serchWord%");
+            //自己紹介文が部分一致しているものを検索
+            $query->orWhere('self_introduction', 'like', "%$serchWord%");
         }
 
         $paginateNumber = 5;//ページネーションで取得する個数
@@ -79,7 +89,6 @@ class AiModel extends Model
      */
     public function getComments()
     {
-        DB::enableQueryLog();
         $paginateNumber = 5;//ページネーションで取得する個数
 
         //コメントの情報とそのコメントをしたユーザーの情報を取得
@@ -90,6 +99,5 @@ class AiModel extends Model
             ->orderBy('ai_model_comments.created_at', 'desc')
             ->paginate($paginateNumber);
 
-        return DB::getQueryLog();
     }
 }

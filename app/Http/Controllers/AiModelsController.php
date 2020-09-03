@@ -21,6 +21,11 @@ class AiModelsController extends Controller
             return response()->json(AiModel::getPaginateData($request->user_id));
         }
 
+        //getパラメータ user_idは存在しているか？
+        if (!empty($request->serchWord)) {
+            return response()->json(AiModel::getPaginateData(0,$request->serchWord));
+        }
+
         //何も指定がなかった場合
         return response()->json(AiModel::getPaginateData());
     }
