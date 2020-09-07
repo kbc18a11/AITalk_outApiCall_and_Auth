@@ -54,7 +54,7 @@ Route::group(['middleware' => ['api']], function () {
         Route::resource('user', 'UsersController', ['only' => ['update']]);
 
         //Aiモデル関係
-        Route::resource('aimodel', 'AiModelsController', ['only' => ['store', 'update']]);
+        Route::resource('aimodel', 'AiModelsController', ['only' => ['store', 'update','destroy']]);
 
         //Aiモデルのコメント関係
         Route::resource('aimodelcomment', 'AiModelCommentsController', ['only' => ['update','destroy']]);

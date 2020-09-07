@@ -108,10 +108,21 @@ class AiModelsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\AiModel $aiModel
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(AiModel $aiModel)
+    public function destroy(int $aimodel_id)
     {
-        //
+        //指定されたidのAIモデルをインスタンス化
+        $aimodel = AiModel::find($aimodel_id);
+
+        //インスタンス化されているか? || AIモデルのユーザーidと認可済みユーザーのidは一致しているか？
+        if (!$aimodel || $aimodel->user_id !== Auth::id()){
+            return response()->json([
+                'deleteResult' => false,
+                'error' => ['id' => '削除できないAIモデルです']
+            ], 422);
+        }
+
+
     }
 }

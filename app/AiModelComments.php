@@ -66,4 +66,9 @@ class AiModelComments extends Model
         # code...
         return Validator::make($array, self::$updateRules, self::$errorMessages);
     }
+
+    public static function deleteByAimodel_id(int $aimodel_id)
+    {
+        $query = self::query();
+    }
 }
