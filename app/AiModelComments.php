@@ -67,8 +67,14 @@ class AiModelComments extends Model
         return Validator::make($array, self::$updateRules, self::$errorMessages);
     }
 
-    public static function deleteByAimodel_id(int $aimodel_id)
+    /**
+     * 引数で指定されたAIモデルのコメントをまとめて削除する
+     * @param int $ai_model_id
+     */
+    public static function deleteByAiModel_id(int $ai_model_id)
     {
         $query = self::query();
+        //指定されたAIモデルにコメントしてるものをすべて削除
+        $query->where('ai_model_id',$ai_model_id)->delete();
     }
 }

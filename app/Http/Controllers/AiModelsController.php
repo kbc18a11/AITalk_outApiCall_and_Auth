@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\AiModel;
+use App\AiModelComments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\S3;
@@ -123,6 +124,6 @@ class AiModelsController extends Controller
             ], 422);
         }
 
-
+        AiModelComments::deleteByAiModel_id($aimodel->id);
     }
 }
