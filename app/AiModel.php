@@ -100,4 +100,19 @@ class AiModel extends Model
             ->paginate($paginateNumber);
 
     }
+
+    /**
+     * 自分のレコードや外部参照されているレコードを削除する
+     * @throws \Exception
+     */
+    public function deleteMe()
+    {
+        //対象のAIモデルのコメントを削除
+        AiModelComments::deleteByAiModel_id($this->id);
+        //対象のAIモデルのいいねを解除
+        FavoriteAiModel::deleteByAiModel_id($this->id);
+
+        //自分のレコードを削除
+        $this->delete();
+    }
 }

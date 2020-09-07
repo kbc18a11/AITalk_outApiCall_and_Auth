@@ -75,4 +75,15 @@ class FavoriteAiModel extends Model
             self::$errorMessages
         );
     }
+
+    /**
+     * 引数で指定されたAIモデルのいいねをまとめて解除する
+     * @param int $ai_model_id
+     */
+    public static function deleteByAiModel_id(int $ai_model_id)
+    {
+        $query = self::query();
+        //指定されたAIモデルにしてるいいねをすべて解除
+        $query->where('ai_model_id',$ai_model_id)->delete();
+    }
 }

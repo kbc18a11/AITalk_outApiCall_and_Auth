@@ -124,6 +124,8 @@ class AiModelsController extends Controller
             ], 422);
         }
 
-        AiModelComments::deleteByAiModel_id($aimodel->id);
+        //削除の実行
+        $aimodel->deleteMe();
+        return response()->json(['deleteResult' => true]);
     }
 }
