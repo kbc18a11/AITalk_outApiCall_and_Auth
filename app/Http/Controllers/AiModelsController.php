@@ -43,7 +43,7 @@ class AiModelsController extends Controller
         //idのユーザーをインスタンス化
         $aimodel = AiModel::find($id);
         if (!$aimodel) return response()->json([
-            'createResult' => false,
+            'getResult' => false,
             'error' => ['id' => '存在しないidです']
         ], 422);
 
