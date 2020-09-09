@@ -179,6 +179,14 @@ class AiModel extends Model
         //対象のAIモデルのいいねを解除
         FavoriteAiModel::deleteByAiModel_id($this->id);
 
+        //既にある口を開けた画像(open_mouth_image)を削除
+        $s3 = new S3('aimodel/openmouthimage');
+        $s3->fileDelete($this->open_mouth_image);
+
+        //既にある口を閉じた画像(close_mouth_image)を削除
+        $s3 = new S3('aimodel/closemouthimage');
+        $s3->fileDelete($this->close_mouth_image);
+
         //自分のレコードを削除
         $this->delete();
     }
