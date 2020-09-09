@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -30,6 +31,17 @@ class AiModel extends Model
     ];
 
     /**
+     * 更新のバリデーションの条件
+     * @var array
+     */
+    private static $updateRules = [
+        'name' => ['required', 'string', 'max:255'],
+        'self_introduction' => ['max:255'],
+        'open_mouth_image' => ['required', 'image'],
+        'close_mouth_image' => ['required', 'image']
+    ];
+
+    /**
      * エラーメッセージ一覧
      * @var array
      */
@@ -44,7 +56,7 @@ class AiModel extends Model
     ];
 
     /**
-     * ユーザー登録のパラメータのバリデーションの検証
+     * AIモデル登録のパラメータのバリデーションの検証
      * @param array
      * @return \Illuminate\Contracts\Validation\Validator
      */
@@ -53,6 +65,61 @@ class AiModel extends Model
         # code...
         return Validator::make($array, self::$createRules, self::$errorMessages);
     }
+
+    /**
+     * AIモデル更新のパラメータのバリデーションの検証
+     * @param array
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    public static function updateValidator(array $array)
+    {
+        # code...
+        return Validator::make($array, self::$updateRules, self::$errorMessages);
+    }
+
+    /***
+     * 引数の名前が既に以外のAIモデルに使用されているかの検証
+     * @param string $name
+     * @return bool nameの検証結果
+     */
+    public function otherPeopleUseEmail(string $name): bool
+    {
+        //指定されたemailを使用したカラムは存在するか？
+        $aimodel = self::where('name', $name)->first();
+        //既に使用されたnameか？ && 使用されているnameのAIモデルのiｄは、自分のidと同じではないか？
+        return $aimodel && $aimodel->id !== $this->id;
+    }
+
+    /**
+     * データの更新
+     * @param array $requestBody 更新するデータ
+     * @param array $options
+     * @return bool
+     */
+    public function update(array $updateData = [], array $options = [])
+    {
+        //口を開けた画像(open_mouth_image)の保存処理
+        $s3 = new S3('aimodel/openmouthimage');
+        $openMouthImagePath = $s3->filUpload($updateData['open_mouth_image']);
+        //既にある口を開けた画像(open_mouth_image)を削除
+        $s3->fileDelete($this->open_mouth_image);
+
+        //口を閉じた画像(close_mouth_image)の保存処理
+        $s3 = new S3('aimodel/closemouthimage');
+        $closeMouthImagePath = $s3->filUpload($updateData['close_mouth_image']);
+        //既にある口を閉じた画像(close_mouth_image)を削除
+        $s3->fileDelete($this->close_mouth_image);
+
+        $attributes = [
+            'name' => $updateData['name'],
+            'self_introduction' => $updateData['self_introduction'],
+            'open_mouth_image' => $openMouthImagePath,
+            'close_mouth_image' => $closeMouthImagePath
+        ];
+
+        return parent::update($attributes, $options);
+    }
+
 
     /**
      * ページネーション用のデータを取得

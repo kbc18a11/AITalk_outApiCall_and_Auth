@@ -96,13 +96,44 @@ class AiModelsController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\AiModel $aiModel
-     * @return \Illuminate\Http\Response
+     * @param int $aimodel_id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, AiModel $aiModel)
+    public function update(Request $request, int $aimodel_id)
     {
-        //
-        return response()->json(['aa' => 'aa']);
+        //バリデーションの検証
+        $validationResult = AiModel::updateValidator($request->all());
+        //バリデーションの結果が駄目か？
+        if ($validationResult->fails()) {
+            # code...
+            return response()->json([
+                'updateResult' => false,
+                'error' => $validationResult->messages()
+            ], 422);
+        }
+
+        //指定されたidのAIモデルをインスタンス化
+        $aimodel = AiModel::find($aimodel_id);
+        //インスタンス化されているか? || AIモデルのユーザーidと認可済みユーザーのidは一致しているか？
+        if (!$aimodel || $aimodel->user_id !== Auth::id()){
+            return response()->json([
+                'deleteResult' => false,
+                'error' => ['id' => '更新できないAIモデルです']
+            ], 422);
+        }
+
+        //メールアドレスの検証
+        if ($aimodel->otherPeopleUseEmail($request->name)) {
+            //エラーメッセージを返す
+            return response()->json([
+                'updateResult' => false,
+                'error' => ['name' => '既にほかのキャラクターが利用しています']
+            ], 422);
+        }
+
+        //データを更新
+        $aimodel->update($request->all());
+        return response()->json(['updateResult' => true]);
     }
 
     /**
