@@ -37,8 +37,8 @@ class AiModel extends Model
     private static $updateRules = [
         'name' => ['required', 'string', 'max:255'],
         'self_introduction' => ['max:255'],
-        'open_mouth_image' => ['required', 'image'],
-        'close_mouth_image' => ['required', 'image']
+        'open_mouth_image' => ['image'],
+        'close_mouth_image' => ['image']
     ];
 
     /**
@@ -82,7 +82,7 @@ class AiModel extends Model
      * @param string $name
      * @return bool nameの検証結果
      */
-    public function otherPeopleUseEmail(string $name): bool
+    public function otherPeopleUseName(string $name): bool
     {
         //指定されたemailを使用したカラムは存在するか？
         $aimodel = self::where('name', $name)->first();
@@ -98,24 +98,31 @@ class AiModel extends Model
      */
     public function update(array $updateData = [], array $options = [])
     {
-        //口を開けた画像(open_mouth_image)の保存処理
-        $s3 = new S3('aimodel/openmouthimage');
-        $openMouthImagePath = $s3->filUpload($updateData['open_mouth_image']);
-        //既にある口を開けた画像(open_mouth_image)を削除
-        $s3->fileDelete($this->open_mouth_image);
-
-        //口を閉じた画像(close_mouth_image)の保存処理
-        $s3 = new S3('aimodel/closemouthimage');
-        $closeMouthImagePath = $s3->filUpload($updateData['close_mouth_image']);
-        //既にある口を閉じた画像(close_mouth_image)を削除
-        $s3->fileDelete($this->close_mouth_image);
-
+        //更新する内容
         $attributes = [
             'name' => $updateData['name'],
             'self_introduction' => $updateData['self_introduction'],
-            'open_mouth_image' => $openMouthImagePath,
-            'close_mouth_image' => $closeMouthImagePath
         ];
+
+        //新しい開いた口の画像は存在しているか？
+        if(!empty($updateData['open_mouth_image'])){
+            //口を開けた画像(open_mouth_image)の保存処理
+            $s3 = new S3('aimodel/openmouthimage');
+            //新しくS3に保存したファイル名をセット
+            $attributes['open_mouth_image'] = $s3->filUpload($updateData['open_mouth_image']);
+            //既にある口を開けた画像(open_mouth_image)を削除
+            $s3->fileDelete($this->open_mouth_image);
+        }
+
+        //新しい閉じた口の画像は存在しているか？
+        if(!empty($updateData['close_mouth_image'])){
+            //口を閉じた画像(close_mouth_image)の保存処理
+            $s3 = new S3('aimodel/closemouthimage');
+            //新しくS3に保存したファイル名をセット
+            $attributes['close_mouth_image'] = $s3->filUpload($updateData['close_mouth_image']);
+            //既にある口を閉じた画像(close_mouth_image)を削除
+            $s3->fileDelete($this->close_mouth_image);
+        }
 
         return parent::update($attributes, $options);
     }

@@ -123,7 +123,7 @@ class AiModelsController extends Controller
         }
 
         //メールアドレスの検証
-        if ($aimodel->otherPeopleUseEmail($request->name)) {
+        if ($aimodel->otherPeopleUseName($request->name)) {
             //エラーメッセージを返す
             return response()->json([
                 'updateResult' => false,
