@@ -18,29 +18,6 @@ class AiModel extends Model
         'open_mouth_image', 'close_mouth_image'
     ];
 
-
-    /**
-     * 登録のバリデーションの条件
-     * @var array
-     */
-    private static $createRules = [
-        'name' => ['required', 'string', 'max:255', 'unique:ai_models'],
-        'self_introduction' => ['max:255'],
-        'open_mouth_image' => ['required', 'image'],
-        'close_mouth_image' => ['required', 'image']
-    ];
-
-    /**
-     * 更新のバリデーションの条件
-     * @var array
-     */
-    private static $updateRules = [
-        'name' => ['required', 'string', 'max:255'],
-        'self_introduction' => ['max:255'],
-        'open_mouth_image' => ['image'],
-        'close_mouth_image' => ['image']
-    ];
-
     /**
      * エラーメッセージ一覧
      * @var array
@@ -62,8 +39,13 @@ class AiModel extends Model
      */
     public static function createValidator(array $array)
     {
-        # code...
-        return Validator::make($array, self::$createRules, self::$errorMessages);
+        $createRules = [
+            'name' => ['required', 'string', 'max:255', 'unique:ai_models'],
+            'self_introduction' => ['max:255'],
+            'open_mouth_image' => ['required', 'image'],
+            'close_mouth_image' => ['required', 'image']
+        ];
+        return Validator::make($array, $createRules, self::$errorMessages);
     }
 
     /**
@@ -73,8 +55,13 @@ class AiModel extends Model
      */
     public static function updateValidator(array $array)
     {
-        # code...
-        return Validator::make($array, self::$updateRules, self::$errorMessages);
+        $updateRules = [
+            'name' => ['required', 'string', 'max:255'],
+            'self_introduction' => ['max:255'],
+            'open_mouth_image' => ['image'],
+            'close_mouth_image' => ['image']
+        ];
+        return Validator::make($array, $updateRules, self::$errorMessages);
     }
 
     /***
@@ -92,7 +79,7 @@ class AiModel extends Model
 
     /**
      * データの更新
-     * @param array $requestBody 更新するデータ
+     * @param array $updateData 更新するデータ
      * @param array $options
      * @return bool
      */
