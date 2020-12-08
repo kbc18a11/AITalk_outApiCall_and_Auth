@@ -154,7 +154,8 @@ class AiModel extends Model
         $paginateNumber = 5;//ページネーションで取得する個数
 
         //コメントの情報とそのコメントをしたユーザーの情報を取得
-        return AiModelComments::select(['ai_model_comments.id', 'ai_model_comments.comment', 'ai_model_comments.created_at',
+        return AiModelComments::select(
+            ['ai_model_comments.id', 'ai_model_comments.comment', 'ai_model_comments.created_at',
             'ai_model_comments.user_id', 'users.name', 'users.icon'])
             ->join('users', 'ai_model_comments.user_id', '=', 'users.id')
             ->where('ai_model_comments.ai_model_id', $this->id)
