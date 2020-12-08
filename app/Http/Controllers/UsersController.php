@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\S3;
+use App\FileStorageWrapper;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -89,7 +89,7 @@ class UsersController extends Controller
         }
 
         //S3のマネージャークラスをインスタンス化
-        $s3 = new S3('icon');
+        $s3 = new FileStorageWrapper('icon');
 
         //更新対象のユーザーのアイコンは初期アイコンではないか？ && アイコンはS3内に存在するか？
         if ($user->icon !== 'icon/default/default_icon.png' && $s3->isFile($user->icon)) {

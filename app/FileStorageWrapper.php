@@ -6,22 +6,22 @@ namespace App;
 use Illuminate\Support\Facades\Storage;
 use phpDocumentor\Reflection\File;
 
-class S3
+class FileStorageWrapper
 {
     //対象とするS3フォルダ
-    private $folderpath;
+    private $folderPath;
 
     //S3のインスタンス
-    private $s3Disk;
+    private $Disk;
 
     /***
      * S3Manager constructor.
-     * @param string $filepath
+     * @param string $folderPath
      */
-    public function __construct(string $folderpath)
+    public function __construct(string $folderPath)
     {
-        $this->folderpath = $folderpath;
-        $this->s3Disk = Storage::disk('s3');
+        $this->folderPath = $folderPath;
+        $this->Disk = Storage::disk('s3');
     }
 
 
@@ -33,7 +33,7 @@ class S3
     public function isFile(string $filePath): bool
     {
         //ファイルは存在するか？
-        if ($this->s3Disk->exists($filePath)) return true;
+        if ($this->Disk->exists($filePath)) return true;
 
         return false;
     }
@@ -44,7 +44,7 @@ class S3
      */
     public function fileDelete($filePath)
     {
-        $this->s3Disk->delete($filePath);
+        $this->Disk->delete($filePath);
     }
 
     /**
@@ -55,7 +55,7 @@ class S3
     public function filUpload($file): string
     {
         //S3にファイルを保存
-        $path =  $this->s3Disk->putFile($this->folderpath, $file, 'public');
+        $path =  $this->Disk->putFile($this->folderPath, $file, 'public');
 
         return $path;
     }

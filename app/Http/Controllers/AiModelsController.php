@@ -6,7 +6,7 @@ use App\AiModel;
 use App\AiModelComments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\S3;
+use App\FileStorageWrapper;
 
 class AiModelsController extends Controller
 {
@@ -70,11 +70,11 @@ class AiModelsController extends Controller
         }
 
         //口を開けた画像(open_mouth_image)の保存処理
-        $openMouthImageFolder = new S3('aimodel/openmouthimage');
+        $openMouthImageFolder = new FileStorageWrapper('aimodel/openmouthimage');
         $openMouthImagePath = $openMouthImageFolder->filUpload($request->open_mouth_image);
 
         //口を閉じた画像(close_mouth_image)の保存処理
-        $closeMouthImageFolder = new S3('aimodel/closemouthimage');
+        $closeMouthImageFolder = new FileStorageWrapper('aimodel/closemouthimage');
         $closeMouthImagePath = $closeMouthImageFolder->filUpload($request->close_mouth_image);
 
         $createParam = [
