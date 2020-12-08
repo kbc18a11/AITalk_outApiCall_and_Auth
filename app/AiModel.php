@@ -179,7 +179,7 @@ class AiModel extends Model
      * 自分のレコードや外部参照されているレコードを削除する
      * @throws \Exception
      */
-    public function deleteMe()
+    public function delete()
     {
         //対象のAIモデルのコメントを削除
         AiModelComments::deleteByAiModel_id($this->id);
@@ -195,6 +195,6 @@ class AiModel extends Model
         $s3->fileDelete($this->close_mouth_image);
 
         //自分のレコードを削除
-        $this->delete();
+        parent::delete();
     }
 }

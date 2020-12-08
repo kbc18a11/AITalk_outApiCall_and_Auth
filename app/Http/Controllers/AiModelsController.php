@@ -156,7 +156,7 @@ class AiModelsController extends Controller
         }
 
         //削除の実行
-        $aimodel->deleteMe();
+        $aimodel->delete();
         return response()->json(['deleteResult' => true]);
     }
 }
