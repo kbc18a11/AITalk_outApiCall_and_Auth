@@ -80,36 +80,32 @@ class AiModel extends Model
 
     /**
      * データの更新
-     * @param array $updateData 更新するデータ
+     * @param array $attributes
      * @param array $options
      * @return bool
      */
-    public function update(array $updateData = [], array $options = [])
+    public function update(array $attributes = [], array $options = [])
     {
-        //更新する内容
-        $attributes = [
-            'name' => $updateData['name'],
-            'self_introduction' => $updateData['self_introduction'],
-        ];
-
         //新しい開いた口の画像は存在しているか？
-        if(!empty($updateData['open_mouth_image'])){
+        if(!empty($attributes['open_mouth_image'])){
             //口を開けた画像(open_mouth_image)の保存処理
-            $s3 = new FileStorageWrapper('aimodel/openmouthimage');
+            $openMouthImageFolder = new FileStorageWrapper('aimodel/openmouthimage');
             //新しくS3に保存したファイル名をセット
-            $attributes['open_mouth_image'] = $s3->filUpload($updateData['open_mouth_image']);
+            $attributes['open_mouth_image'] = $openMouthImageFolder->filUpload($attributes['open_mouth_image']);
+
             //既にある口を開けた画像(open_mouth_image)を削除
-            $s3->fileDelete($this->open_mouth_image);
+            $openMouthImageFolder->fileDelete($this->open_mouth_image);
         }
 
         //新しい閉じた口の画像は存在しているか？
-        if(!empty($updateData['close_mouth_image'])){
+        if(!empty($attributes['close_mouth_image'])){
             //口を閉じた画像(close_mouth_image)の保存処理
-            $s3 = new FileStorageWrapper('aimodel/closemouthimage');
+            $closeMouthImageFolder = new FileStorageWrapper('aimodel/closemouthimage');
             //新しくS3に保存したファイル名をセット
-            $attributes['close_mouth_image'] = $s3->filUpload($updateData['close_mouth_image']);
+            $attributes['close_mouth_image'] = $closeMouthImageFolder->filUpload($attributes['close_mouth_image']);
+
             //既にある口を閉じた画像(close_mouth_image)を削除
-            $s3->fileDelete($this->close_mouth_image);
+            $closeMouthImageFolder->fileDelete($this->close_mouth_image);
         }
 
         return parent::update($attributes, $options);
