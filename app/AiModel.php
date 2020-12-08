@@ -77,6 +77,7 @@ class AiModel extends Model
         return $aimodel && $aimodel->id !== $this->id;
     }
 
+
     /**
      * データの更新
      * @param array $updateData 更新するデータ

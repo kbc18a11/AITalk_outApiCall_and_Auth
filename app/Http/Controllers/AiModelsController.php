@@ -70,12 +70,12 @@ class AiModelsController extends Controller
         }
 
         //口を開けた画像(open_mouth_image)の保存処理
-        $s3 = new S3('aimodel/openmouthimage');
-        $openMouthImagePath = $s3->filUpload($request->open_mouth_image);
+        $openMouthImageFolder = new S3('aimodel/openmouthimage');
+        $openMouthImagePath = $openMouthImageFolder->filUpload($request->open_mouth_image);
 
         //口を閉じた画像(close_mouth_image)の保存処理
-        $s3 = new S3('aimodel/closemouthimage');
-        $closeMouthImagePath = $s3->filUpload($request->close_mouth_image);
+        $closeMouthImageFolder = new S3('aimodel/closemouthimage');
+        $closeMouthImagePath = $closeMouthImageFolder->filUpload($request->close_mouth_image);
 
         $createParam = [
             'user_id' => Auth::id(),
@@ -84,6 +84,7 @@ class AiModelsController extends Controller
             'open_mouth_image' => $openMouthImagePath,
             'close_mouth_image' => $closeMouthImagePath
         ];
+        //insert実行
         AiModel::create($createParam);
 
         return response()->json([
